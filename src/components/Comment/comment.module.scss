@@ -1,0 +1,41 @@
+.comment {
+	display: grid;
+	grid-template-columns: 40px 1fr;
+	gap: 12px;
+	margin-bottom: 20px;
+
+	&__avatar {
+		width: 40px;
+		height: 40px;
+		border: 1px solid #c5cdd3;
+		background-color: #f5f5f5;
+		border-radius: 50%;
+	}
+
+	&__body {
+
+	}
+
+	&__header {
+		padding-top: 10px;
+		margin-bottom: 20px;
+	}
+	
+	&__name {
+		color: #525460;
+		font-size: 14px;
+		margin-bottom: 10px;
+	}
+
+	&__date {
+		color: #63677c;
+		font-size: 12px;
+	}
+
+	&__text {
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+		border-radius: 5px;
+		background-color: #e3e9f4;
+		padding: 10px 63px 21px 9px;
+	}
+}

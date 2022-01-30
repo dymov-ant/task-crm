@@ -1,0 +1,23 @@
+.divider {
+	border-radius: 1px;
+
+	&--horizontal {
+		width: 100%;
+		height: 1px;
+	}
+
+	&--dark {
+		background-color: #dae0e7;
+		box-shadow: 0 0 10px rgba(94, 96, 109, 0.2);
+	}
+
+	&--light {
+		background-color: #eef1f4;
+	}
+
+	&--vertical {
+		width: 1px;
+		height: 100%;
+		background-color: #e2e7ea;
+	}
+}

@@ -1,0 +1,21 @@
+.form {
+	width: 100%;
+	max-width: 625px;
+	padding: 55px 0 55px 42px;
+
+	&__field {
+		margin-bottom: 22px;
+
+		&:last-of-type {
+			margin-bottom: 74px;
+		}
+	}
+
+	&__textarea {
+		max-height: 85px;
+
+		&--description {
+			max-height: 134px;
+		}
+	}
+}
