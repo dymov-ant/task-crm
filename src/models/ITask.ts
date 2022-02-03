@@ -40,3 +40,23 @@ export interface ITask {
   executorGroupName: string;
   lifetimeItems?: ILifetimeItem[];
 }
+
+export interface ResponseGetAllTask {
+  "@odata.context": string;
+  value: ITask[];
+}
+
+export interface PayloadUpdateTask {
+  id: number;
+  statusId: number;
+  statusName: string;
+  statusRgb: string;
+  executorId: number;
+  executorName: string;
+  comment: string;
+}
+
+export interface CreateTaskPayload {
+  name: string;
+  description: string;
+}

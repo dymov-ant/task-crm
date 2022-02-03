@@ -1,4 +1,6 @@
 import React from "react";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
 import { ILifetimeItem } from "../../models/ITask";
 import styles from "./comment.module.scss";
 
@@ -10,10 +12,10 @@ function Comment({ userName, createdAt, comment }: ILifetimeItem) {
         <div className={styles.comment__header}>
           <p className={styles.comment__name}>{userName}</p>
           <p className={styles.comment__date}>
-            {`${createdAt} прокомментировал`}
+            {`${format(new Date(createdAt), "dd MMMM, H:mm'", { locale: ru })} прокомментировал`}
           </p>
         </div>
-        <p className={styles.comment__text}>{comment}</p>
+        <p className={styles.comment__text} dangerouslySetInnerHTML={{ __html: comment }} />
       </div>
     </div>
   );

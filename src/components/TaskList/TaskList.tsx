@@ -1,368 +1,20 @@
 import React from "react";
 import cn from "classnames";
-import { setCurrentTask } from "../../store/tasksSlice/reducer";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useTypeSelector } from "../../hooks/redux";
 import { ITask } from "../../models/ITask";
 import { TaskStatus } from "../TaskStatus";
 import { formatId } from "../../helpers";
 import { Divider } from "../Divider";
+import { getTaskById } from "../../store/tasksSlice/actions";
 import styles from "./taskList.module.scss";
 
 function TaskList() {
-  const priorities = [
-    {
-      rgb: "#fef6f6",
-      id: 103311,
-      name: "Очень низкий",
-    },
-    {
-      rgb: "#fbd6b9",
-      id: 103312,
-      name: "Низкий",
-    },
-    {
-      rgb: "#f75394",
-      id: 103313,
-      name: "Средний",
-    },
-    {
-      rgb: "#b32c55",
-      id: 103314,
-      name: "Высокий",
-    },
-    {
-      rgb: "#ee0909",
-      id: 103315,
-      name: "Критический",
-    },
-  ];
-  const data: ITask[] = [
-    {
-      id: 191120,
-      name: "Заказать обед",
-      description: "<p style=\"color: #e5e5e5;\">Уха</p> из трех видов рыб. Салат с телятиной. МОРС КЛЮКВЕННЫЙ",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69988,
-      taskTypeName: "Стандартный",
-      statusId: 119976,
-      statusName: "Открыта",
-      statusRgb: "#fd5e53",
-      priorityId: 103313,
-      priorityName: "Средний",
-      serviceId: 69987,
-      serviceName: "Еда > Заказ обедов",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69988,
-      executorName: "Петров Борис",
-      executorGroupId: 69987,
-      executorGroupName: "Офис менеджеры",
-      tags: [
-        {
-          id: 103312,
-          name: "Салат",
-        },
-        {
-          id: 103311,
-          name: "Суп",
-        },
-      ],
-    },
-    {
-      id: 191121,
-      name: "Заказать обед",
-      description: "Уха из трех видов рыб. Салат с телятиной. МОРС КЛЮКВЕННЫЙ",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69988,
-      taskTypeName: "Стандартный",
-      statusId: 119976,
-      statusName: "Открыта",
-      statusRgb: "#fd5e53",
-      priorityId: 103313,
-      priorityName: "Средний",
-      serviceId: 69987,
-      serviceName: "Еда > Заказ обедов",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69988,
-      executorName: "Петров Борис",
-      executorGroupId: 69987,
-      executorGroupName: "Офис менеджеры",
-      tags: [
-        {
-          id: 103312,
-          name: "Салат",
-        },
-        {
-          id: 103311,
-          name: "Суп",
-        },
-      ],
-    },
-    {
-      id: 191122,
-      name: "Заказать обед",
-      description: "Уха из трех видов рыб. Салат с телятиной. МОРС КЛЮКВЕННЫЙ",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69988,
-      taskTypeName: "Стандартный",
-      statusId: 119976,
-      statusName: "Открыта",
-      statusRgb: "#fd5e53",
-      priorityId: 103313,
-      priorityName: "Средний",
-      serviceId: 69987,
-      serviceName: "Еда > Заказ обедов",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69988,
-      executorName: "Петров Борис",
-      executorGroupId: 69987,
-      executorGroupName: "Офис менеджеры",
-      tags: [
-        {
-          id: 103312,
-          name: "Салат",
-        },
-        {
-          id: 103311,
-          name: "Суп",
-        },
-      ],
-    },
-    {
-      id: 191123,
-      name: "Заказать обед",
-      description: "Уха из трех видов рыб. Салат с телятиной. МОРС КЛЮКВЕННЫЙ",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69988,
-      taskTypeName: "Стандартный",
-      statusId: 119977,
-      statusName: "Выполнена",
-      statusRgb: "#025969",
-      priorityId: 103313,
-      priorityName: "Средний",
-      serviceId: 69987,
-      serviceName: "Еда > Заказ обедов",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69988,
-      executorName: "Петров Борис",
-      executorGroupId: 69987,
-      executorGroupName: "Офис менеджеры",
-      tags: [
-        {
-          id: 103312,
-          name: "Салат",
-        },
-        {
-          id: 103311,
-          name: "Суп",
-        },
-      ],
-    },
-    {
-      id: 191124,
-      name: "Заказать обед",
-      description: "Уха из трех видов рыб. Салат с телятиной. МОРС КЛЮКВЕННЫЙ",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69988,
-      taskTypeName: "Стандартный",
-      statusId: 119975,
-      statusName: "В работе",
-      statusRgb: "#fcad51",
-      priorityId: 103313,
-      priorityName: "Средний",
-      serviceId: 69987,
-      serviceName: "Еда > Заказ обедов",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69988,
-      executorName: "Петров Борис",
-      executorGroupId: 69987,
-      executorGroupName: "Офис менеджеры",
-      tags: [
-        {
-          id: 103312,
-          name: "Салат",
-        },
-        {
-          id: 103311,
-          name: "Суп",
-        },
-      ],
-    },
-    {
-      id: 191125,
-      name: "Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер ",
-      description: "<p style=\"color:red;\">Не загружается</p>",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69989,
-      taskTypeName: "Запрос на обслуживание",
-      statusId: 119976,
-      statusName: "Открыта",
-      statusRgb: "#fd5e53",
-      priorityId: 103314,
-      priorityName: "Высокий",
-      serviceId: 69988,
-      serviceName: "Обслуживание > Техническая поддержка",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69987,
-      executorName: "Сидоров Иван",
-      executorGroupId: 69988,
-      executorGroupName: "Технические специалисты",
-      tags: [
-        {
-          id: 103314,
-          name: "Важно",
-        },
-      ],
-    },
-    {
-      id: 191126,
-      name: "Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер Починить компьютер ",
-      description: "Не загружается",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69989,
-      taskTypeName: "Запрос на обслуживание",
-      statusId: 119976,
-      statusName: "Открыта",
-      statusRgb: "#fd5e53",
-      priorityId: 103314,
-      priorityName: "Высокий",
-      serviceId: 69988,
-      serviceName: "Обслуживание > Техническая поддержка",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69987,
-      executorName: "Сидоров Иван",
-      executorGroupId: 69988,
-      executorGroupName: "Технические специалисты",
-      tags: [
-        {
-          id: 103314,
-          name: "Важно",
-        },
-      ],
-    },
-    {
-      id: 191127,
-      name: "Починить компьютер",
-      description: "Не загружается",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69989,
-      taskTypeName: "Запрос на обслуживание",
-      statusId: 119975,
-      statusName: "В работе",
-      statusRgb: "#fcad51",
-      priorityId: 103314,
-      priorityName: "Высокий",
-      serviceId: 69988,
-      serviceName: "Обслуживание > Техническая поддержка",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69987,
-      executorName: "Сидоров Иван",
-      executorGroupId: 69988,
-      executorGroupName: "Технические специалисты",
-      tags: [
-        {
-          id: 103314,
-          name: "Важно",
-        },
-      ],
-    },
-    {
-      id: 191128,
-      name: "Починить компьютер",
-      description: "Не загружается",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69989,
-      taskTypeName: "Запрос на обслуживание",
-      statusId: 119977,
-      statusName: "Выполнена",
-      statusRgb: "#025969",
-      priorityId: 103314,
-      priorityName: "Высокий",
-      serviceId: 69988,
-      serviceName: "Обслуживание > Техническая поддержка",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69987,
-      executorName: "Сидоров Иван",
-      executorGroupId: 69988,
-      executorGroupName: "Технические специалисты",
-      tags: [
-        {
-          id: 103314,
-          name: "Важно",
-        },
-      ],
-    },
-    {
-      id: 191129,
-      name: "Починить компьютер",
-      description: "Не загружается",
-      createdAt: "2022-01-29T10:13:35.798192+03:00",
-      updatedAt: "2022-01-29T10:13:35.798192+03:00",
-      price: 100,
-      taskTypeId: 69989,
-      taskTypeName: "Запрос на обслуживание",
-      statusId: 119973,
-      statusName: "Отложена",
-      statusRgb: "#909090",
-      priorityId: 103314,
-      priorityName: "Высокий",
-      serviceId: 69988,
-      serviceName: "Обслуживание > Техническая поддержка",
-      resolutionDatePlan: "2022-01-29T10:13:35.798192+03:00",
-      initiatorId: 69989,
-      initiatorName: "Иванов Андрей",
-      executorId: 69987,
-      executorName: "Сидоров Иван",
-      executorGroupId: 69988,
-      executorGroupName: "Технические специалисты",
-      tags: [
-        {
-          id: 103314,
-          name: "Важно",
-        },
-      ],
-    },
-  ];
-
   const dispatch = useAppDispatch();
+  const { priorities } = useTypeSelector((state) => state.appReducer);
+  const { tasks } = useTypeSelector((state) => state.tasksReducer);
 
   const handleTaskClick = (task: ITask) => {
-    dispatch(setCurrentTask(task));
+    dispatch(getTaskById(task.id));
   };
 
   return (
@@ -375,13 +27,12 @@ function TaskList() {
         <div className={styles.item__col}>Исполнитель</div>
       </div>
       <Divider color="dark" />
-      {data.map((task) => (
-        <>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a
-            href="#"
+      {tasks.map((task) => (
+        <div key={task.id}>
+          {/* eslint-disable-next-line max-len */}
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,jsx-a11y/click-events-have-key-events,jsx-a11y/interactive-supports-focus */ }
+          <div
             role="button"
-            key={task.id}
             className={styles.item}
             onClick={() => handleTaskClick(task)}
           >
@@ -395,9 +46,9 @@ function TaskList() {
               <TaskStatus statusName={task.statusName} statusRgb={task.statusRgb} />
             </div>
             <div className={styles.item__col}>{task.executorName}</div>
-          </a>
+          </div>
           <Divider color="light" />
-        </>
+        </div>
       ))}
     </div>
   );

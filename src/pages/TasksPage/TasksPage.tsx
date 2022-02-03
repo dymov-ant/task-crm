@@ -6,13 +6,25 @@ import { TaskEdit } from "../../components/TaskEdit";
 import { formatId } from "../../helpers";
 import { Button } from "../../components/Button";
 import { TaskAdd } from "../../components/TaskAdd";
-import { setCurrentTask } from "../../store/tasksSlice/reducer";
+import { clearError, setCurrentTask } from "../../store/tasksSlice/reducer";
+import { getAllTasks } from "../../store/tasksSlice/actions";
+import { Spinner } from "../../components/Spinner";
+import { Alert } from "../../components/Alert";
 
 function TasksPage() {
   const dispatch = useAppDispatch();
-  const { currentTask } = useTypeSelector((state) => state.tasksReducer);
+  const {
+    currentTask,
+    isAllLoading,
+    isTaskLoading,
+    error,
+  } = useTypeSelector((state) => state.tasksReducer);
   const [editPanelOpen, setEditPanelOpen] = useState(false);
   const [addPanelOpen, setAddPanelOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(getAllTasks());
+  }, []);
 
   useEffect(() => {
     if (currentTask) {
@@ -35,28 +47,44 @@ function TasksPage() {
     setAddPanelOpen(false);
   };
 
+  const clearErrorHandler = () => {
+    dispatch(clearError());
+  };
+
+  if (isAllLoading) {
+    return (
+      <div className="page">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="page">
       <div className="page__header">
         <Button size="big" onClick={openAddPanel}>Создать заявку</Button>
       </div>
-      <div>
+      <div className="page__body">
         <TaskList />
       </div>
       { currentTask && (
         <Panel
-          title={`№ ${formatId(currentTask.id)}`}
-          subTitle={currentTask.name}
+          title={isTaskLoading ? "" : `№ ${formatId(currentTask.id)}`}
+          subTitle={isTaskLoading ? "" : currentTask.name}
           open={editPanelOpen}
           handleClose={closeEditPanel}
         >
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <TaskEdit {...currentTask} />
+          {isTaskLoading ? <Spinner /> : <TaskEdit {...currentTask} />}
         </Panel>
       )}
-      <Panel title="Новая заявка" open={addPanelOpen} handleClose={closeAddPanel}>
-        <TaskAdd />
+      <Panel
+        title={isTaskLoading ? "" : "Новая заявка"}
+        open={addPanelOpen}
+        handleClose={closeAddPanel}
+      >
+        {isTaskLoading ? <Spinner /> : <TaskAdd />}
       </Panel>
+      {error && <Alert message={error} handleClose={clearErrorHandler} />}
     </div>
   );
 }

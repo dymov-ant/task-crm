@@ -4,13 +4,13 @@ import styles from "./textarea.module.scss";
 
 interface TextareaProps
   extends DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
-
+  error?: boolean;
 }
 
-function Textarea({ className, ...props }: TextareaProps) {
+function Textarea({ className, error, ...props }: TextareaProps) {
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
-    <textarea className={cn(styles.textarea, className)} {...props} />
+    <textarea className={cn(styles.textarea, className, { [styles.error]: error })} {...props} />
   );
 }
 

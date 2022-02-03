@@ -3,7 +3,7 @@ import closeIcon from "./close.png";
 import styles from "./panel.module.scss";
 
 interface PanelProps {
-  title: string;
+  title?: string;
   subTitle?: string;
   open: boolean;
   handleClose: () => void;
@@ -20,12 +20,12 @@ const Panel: FC<PanelProps> = ({
   return (
     <div className={styles.panel} style={{ display: open ? "" : "none" }}>
       <div className={styles.panel__header}>
-        <p className={styles.panel__title}>{title}</p>
+        { title && <p className={styles.panel__title}>{ title }</p> }
         {
           subTitle && (
-          <p className={styles.panel__subtitle}>
-            {subTitle}
-          </p>
+            <p className={styles.panel__subtitle}>
+              { subTitle }
+            </p>
           )
         }
         <button
@@ -37,7 +37,7 @@ const Panel: FC<PanelProps> = ({
         </button>
       </div>
       <div className={styles.panel__body}>
-        {children}
+        { children }
       </div>
     </div>
   );
